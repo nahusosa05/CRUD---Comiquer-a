@@ -31,7 +31,7 @@ def main():
                 if user_input >= 1 and user_input <= 6:
                     # AGREGAR
                     if user_input == 1:
-                        cfg.registrar_mangas(books_in_stock)
+                        cfg.registrar_mangas(conn)
                         cfg.limpiar_pantalla()
 
                     # ACTUALIZAR
