@@ -1,14 +1,29 @@
-def registrar_mangas(books_in_stock):
+import sqlite3
+from cfg import prompt_is_valid
+from cfg import is_int
+from cfg import is_valid_str
+from conexion import insert_autor
+from conexion import insert_manga
+
+def registrar_mangas(conn):
     print(f"\n"+"-"*50)
-    name = input("Ingrese nombre del Manga/Comic: ")
+    name = prompt_is_valid("Ingrese el titulo del Manga:",is_valid_str)
     print(f"-"*50)
-    autor = input("Ingrese nombre del Autor: ")
+    autor = prompt_is_valid("Ingrese nombre del Autor: ",is_valid_str)
     print(f"-"*50)
     volumes_in_stock = []
     volumes = -1
+    
+    try:
+        insert_autor(conn,autor)
+    except sqlite3.Error:
+        print(f"\n" + "*" * 50)
+        print("El autor ya existe o ocurrió un error.")
+        print(f"*" * 50 + "\n")
+
 
     while volumes != '0':
-        volumes = input("Ingrese los tomos que hay en stock (0 para salir): ")
+        volumes = prompt_is_valid("Ingrese los tomos que hay en stock (0 para salir): ", is_int)
         if volumes.isdigit() and int(volumes)>= 0: 
             if volumes == '0':
                 volumes_in_stock.sort()
