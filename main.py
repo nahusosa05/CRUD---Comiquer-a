@@ -22,11 +22,7 @@ def main():
             print(f"=" * 50)
             user_input = input("\nElija su opción numerica del 1 al 6:    ")
 
-            if not user_input.isdigit():
-                print(f"\n" + "*" * 50)
-                print("Debe ingresar un valor numérico. Por favor, inténtelo nuevamente.")
-                print(f"*" * 50 + "\n")
-            else:
+            if cfg.is_int(user_input):
                 user_input = int(user_input)
                 if user_input >= 1 and user_input <= 6:
                     # AGREGAR
