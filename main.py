@@ -1,24 +1,26 @@
 # COMIQUERIA (MANGAS Y COMICS)
-# from colorama import init
-import cfg
+from colorama import init, Fore, Back
+from modulos.registrar import registrar_mangas
+import cfg 
 import conexion
+init(autoreset=True)
 
 def main():
     books_in_stock = []
-    db_name = 'comiqueria.db'
+    db_name = 'inventario.db'
     conn = conexion.connect_to_db(db_name)
     
     if conn:
         while True:
             print(f"=" * 50)
-            print("Menú para gestión de libros".center(50))
-            print(f"=" * 50)
-            print(f"{'\t 1.':<14}{'Registrar mangas'}")           # new mangas to up
-            print(f"{'\t 2.':<14}{'Actualizar mangas'}")         # update mangas in stock (volumes)
-            print(f"{'\t 3.':<14}{'Eliminar mangas'}")           # delete mangas without stock
-            print(f"{'\t 4.':<14}{'Buscar mangas'}")             # shows the specific stock of a product
-            print(f"{'\t 5.':<14}{'Listado de mangas disponibles'}")  # shows all mangas in stock   
-            print(f"{'\t 6.':<14}{'Salir'}")
+            print(Back.CYAN + Fore.GREEN + "       Menú para gestión de Mangas".center(50)) 
+            print(Fore.RESET + f"=" * 50) 
+            print(f"{Fore.BLUE + '\t 1.':<14}{Fore.RESET + 'Registrar mangas'}")         
+            print(f"{Fore.BLUE + '\t 2.':<14}{Fore.RESET + 'Actualizar mangas'}")        
+            print(f"{Fore.BLUE + '\t 3.':<14}{Fore.RESET + 'Eliminar mangas'}")          
+            print(f"{Fore.BLUE + '\t 4.':<14}{Fore.RESET + 'Buscar mangas'}")             
+            print(f"{Fore.BLUE + '\t 5.':<14}{Fore.RESET + 'Listado de mangas disponibles'}")     
+            print(f"{Fore.BLUE + '\t 6.':<14}{Fore.RESET + 'Salir'}")
             print(f"=" * 50)
             user_input = input("\nElija su opción numerica del 1 al 6:    ")
 
@@ -27,28 +29,28 @@ def main():
                 if user_input >= 1 and user_input <= 6:
                     # AGREGAR
                     if user_input == 1:
-                        cfg.registrar_mangas(conn)
-                        cfg.limpiar_pantalla()
+                        registrar_mangas(conn)
+                        #cfg.clear()
 
                     # ACTUALIZAR
                     elif user_input == 2:
-                        cfg.actualizar_mangas(books_in_stock)
-                        cfg.limpiar_pantalla()
+                        #cfg.actualizar_mangas(books_in_stock)
+                        cfg.clear()
 
                     # ELIMINAR 
                     elif user_input == 3:
-                        cfg.eliminar_mangas(books_in_stock)
-                        cfg.limpiar_pantalla()
+                        #cfg.eliminar_mangas(books_in_stock)
+                        cfg.clear()
 
                     # BUSCAR 
                     elif user_input == 4:
-                        cfg.limpiar_pantalla()
-                        cfg.buscar_mangas(books_in_stock)
+                        cfg.clear()
+                        #cfg.buscar_mangas(books_in_stock)
 
                     # LISTADO
                     elif user_input == 5:
-                        cfg.limpiar_pantalla()
-                        cfg.listado_mangas(books_in_stock)
+                        cfg.clear()
+                        #cfg.listado_mangas(books_in_stock)
 
                     # SALIR
                     elif user_input == 6:
