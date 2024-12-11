@@ -28,18 +28,6 @@ def is_valid_str(input):
     
     return False
 
-def yes_or_no():
-    while True:
-        user_input = input("Por favor, ingresa 'SI' o 'NO': ").strip().upper()  # Convertir a mayúsculas
-        if user_input == "SI":
-            return True  # Retorna True si la respuesta es "SI"
-        elif user_input == "NO":
-            return False  # Retorna False si la respuesta es "NO"
-        else:
-            prompt = get_wrong_msg("Entrada inválida. Por favor, ingresa:" + Fore.GREEN + "SI" + Fore.RESET +  "/" + Fore.RED + "NO")
-            print("Entrada inválida. Por favor, ingresa:" + Fore.GREEN + "SI" + Fore.RESET +  "/" + Fore.RED + "NO")
-
-
 def prompt_is_valid(prompt, els, validation):
     # Solicita una entrada al usuario hasta que sea válida.
     # prompt_message: Mensaje para mostrar al usuario.
@@ -47,7 +35,6 @@ def prompt_is_valid(prompt, els, validation):
     # return: La entrada válida.
     while True:
         user_input = input(prompt)  
-        print("-" * 50)
         if validation(user_input):
             return user_input
         else:
