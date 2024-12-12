@@ -1,12 +1,12 @@
 # COMIQUERIA (MANGAS Y COMICS)
 from colorama import init, Fore, Back
 from modulos.registrar import registrar_mangas
+from modulos.actualizar import actualizar_mangas
 import cfg 
 import conexion
 init(autoreset=True)
 
 def main():
-    books_in_stock = []
     db_name = 'inventario.db'
     conn = conexion.connect_to_db(db_name)
     
@@ -29,18 +29,18 @@ def main():
                 if user_input >= 1 and user_input <= 6:
                     # AGREGAR
                     if user_input == 1:
+                        cfg.clear()
                         registrar_mangas(conn)
-                        #cfg.clear()
 
                     # ACTUALIZAR
                     elif user_input == 2:
-                        #cfg.actualizar_mangas(books_in_stock)
                         cfg.clear()
+                        actualizar_mangas(conn)
 
                     # ELIMINAR 
                     elif user_input == 3:
-                        #cfg.eliminar_mangas(books_in_stock)
                         cfg.clear()
+                        #cfg.eliminar_mangas(books_in_stock)
 
                     # BUSCAR 
                     elif user_input == 4:
@@ -54,15 +54,17 @@ def main():
 
                     # SALIR
                     elif user_input == 6:
+                        conn.close()
                         break
                 else:
                     print(f"\n" + "*" * 50)
-                    print("Debe ingresar un valor numérico entre 1 y 6. Por favor, inténtelo nuevamente.".center(50))
+                    print(Fore.RED + "Debe ingresar un valor numérico entre 1 y 6. Por favor, inténtelo nuevamente.".center(50))
                     print(f"*" * 50 + "\n")
     else:
         print(f"\n" + "*" * 50)
-        print("Problema al conectar con la base de datos.".center(50))
+        print(Fore.RED + "Problema al conectar con la base de datos.".center(50))
         print(f"*" * 50 + "\n")
+    
 
 if __name__ == "__main__":
     main()
