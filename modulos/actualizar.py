@@ -13,9 +13,10 @@ init(autoreset=True)
 strWrong = (Fore.RED + "Entrada inválida. Asegúrate de ingresar solo letras. ".center(50))
 intWrong = (Fore.RED + "Ingrese valores numericos".center(50))
 
-userFormat = ("\t" + Fore.RED + "Título: " + Fore.RESET)
+titleFormat = ("\t" + Fore.RED + "Título: " + Fore.RESET)
 authorFormat = ("\t" + Fore.CYAN + "Nuevo autor: " + Fore.RESET)
 optionFormat = ("\t" + Fore.CYAN + "Opción: " + Fore.RESET)
+option2Format = ("\t" + Fore.CYAN + "SI/NO/SALIR: " + Fore.RESET)
 oldVolumeFormat = ("\t" + Fore.CYAN + "Volumen actual: " + Fore.RESET)
 newVolumeFormat = ("\t" + Fore.CYAN + "Volumen nuevo: " + Fore.RESET)
 volumeFormat = ("\t" + Fore.CYAN + "Volumen a modificar: " + Fore.RESET)
@@ -25,7 +26,7 @@ def title_change(conn,user_title):
     print("\n" + "-" * 50)
     print(("Ingrese el nuevo " + Fore.GREEN + "Título" + Fore.RESET + ":").center(50))
     print("." * 50)
-    new_title = prompt_is_valid(userFormat, strWrong, is_valid_str)
+    new_title = prompt_is_valid(titleFormat, strWrong, is_valid_str)
     new_title = new_title.title() 
     print("-" * 50)
     
@@ -37,38 +38,35 @@ def title_change(conn,user_title):
     print("¿Los datos son correctos? " + "(" + Fore.GREEN + "SI" + Fore.RESET + "/" + Fore.RED + "NO" + Fore.RESET + "/" + "SALIR" + ")")
     print("." * 50)
     while True:
-        user_input = input("\t" + Fore.CYAN + "SI/NO/SALIR: " + Fore.RESET)
+        user_input = prompt_is_valid(option2Format, strWrong, is_valid_str)
+        user_input = user_input.upper()
     
-        if is_valid_str(user_input):
-            user_input = user_input.upper()
-            if user_input == 'SI':
-                try:
-                    cursor = conn.cursor()
-                    cursor.execute("SELECT 1 FROM Mangas WHERE Title = ?", (new_title,))
-                    if cursor.fetchone():
-                        prompt = get_wrong_msg(Fore.RED + "Error: El nuevo título ya existe en la base de datos. Por favor, elija otro." + Fore.RESET)
-                        print(prompt)
-                        return actualizar_mangas(conn)
-                    else:
-                        cursor.execute("UPDATE Mangas SET Title = ? WHERE Title = ?", (new_title, user_title))
-                        conn.commit()
-                        prompt = get_format_msg(Fore.GREEN + "Título actualizado correctamente.".center(50) + Fore.RESET)
-                        print(prompt)
-                except sqlite3.Error as e:
-                    print(Fore.RED + f"Error al actualizar el título: {e}" + Fore.RESET)
-                    
-            elif user_input == 'NO':
-                print(Fore.YELLOW + "\n" + "." * 50)
-                print(Fore.YELLOW + "Reiniciando el proceso..." + Fore.RESET)
-                print(Fore.YELLOW + "." * 50)
-            elif user_input == 'SALIR':
-                print(Fore.YELLOW + "\n" + "." * 50)
-                print(Fore.YELLOW + "Volviendo al menu...".center(50) + Fore.RESET)
-                print(Fore.YELLOW + "." * 50 + "\n")
-                break
-            else:
-                prompt = get_wrong_msg(Fore.RED + "Entrada no válida. Por favor ingresa: " + Fore.GREEN + "SI" + Fore.RESET + "/" + Fore.RED + "NO" + Fore.RESET)
-                print(prompt)
+        if user_input == 'SI':
+            try:
+                cursor = conn.cursor()
+                cursor.execute("SELECT 1 FROM Mangas WHERE Title = ?", (new_title,))
+                if cursor.fetchone():
+                    prompt = get_wrong_msg(Fore.RED + "Error: El nuevo título ya existe en la base de datos. Por favor, elija otro." + Fore.RESET)
+                    print(prompt)
+                    return actualizar_mangas(conn)
+                else:
+                    cursor.execute("UPDATE Mangas SET Title = ? WHERE Title = ?", (new_title, user_title))
+                    conn.commit()
+                    prompt = get_format_msg(Fore.GREEN + "Título actualizado correctamente.".center(50) + Fore.RESET)
+                    print(prompt)
+            except sqlite3.Error as e:
+                print(Fore.RED + f"Error al actualizar el título: {e}" + Fore.RESET)
+                
+        elif user_input == 'NO':
+            print(Fore.YELLOW + "\n" + "." * 50)
+            print(Fore.YELLOW + "Reiniciando el proceso..." + Fore.RESET)
+            print(Fore.YELLOW + "." * 50)
+        elif user_input == 'SALIR':
+            print(Fore.YELLOW + "\n" + "." * 50)
+            print(Fore.YELLOW + "Volviendo al menu...".center(50) + Fore.RESET)
+            print(Fore.YELLOW + "." * 50 + "\n")
+            break
+            
            
 def author_change(conn, user_title):
     print("\n" + "-" * 50)
@@ -99,7 +97,8 @@ def author_change(conn, user_title):
     print("." * 50)
 
     while True:
-        user_input = input("\t" + Fore.CYAN + "SI/NO/SALIR: " + Fore.RESET).strip().upper()
+        user_input = prompt_is_valid(option2Format, strWrong, is_valid_str)
+        user_input = user_input.upper()
 
         if user_input == "SI":
             try:
@@ -249,17 +248,15 @@ def volumes_change(conn, user_title):
                     new_quantity = prompt_is_valid(quantityFormat, intWrong, is_int)
                     print("." * 50)
                     
-                    
                     try:
                         cursor.execute("UPDATE Volumes SET Quantity = ? WHERE Title = ? AND Volume = ?", 
-                                    (new_quantity, user_title, volume_to_modify))
+                                      (new_quantity, user_title, volume_to_modify))
                         conn.commit()
                         prompt = get_format_msg(Fore.GREEN + "La cantidad fue actualizada correctamente." + Fore.RESET)
                         print(prompt)
                     except sqlite3.Error as e:
                         prompt = get_wrong_msg(Fore.RED + f"Error al modificar la cantidad: {e}" + Fore.RESET)
                         print(prompt)
-            
                     break        
                 else:
                     x = get_wrong_msg(Fore.RED + "Opcion incorrecta, porfavor ingrese:" + Fore.RESET + " (" + Fore.GREEN + "Volumen" 
@@ -270,7 +267,6 @@ def volumes_change(conn, user_title):
             x = get_wrong_msg(Fore.RED + "Opcion incorrecta, porfavor ingrese:" + Fore.RESET + " (" + Fore.GREEN + "Agregar" 
             + Fore.RESET + "/" + Fore.YELLOW + "Modificar" + Fore.RESET + ")")
             print(x)
-    
     
 def actualizar_mangas(conn):
     print(f"\n{'-' * 50}")
@@ -303,7 +299,7 @@ def actualizar_mangas(conn):
     print("." * 50)
     
     while True:
-        user_title = prompt_is_valid(userFormat,strWrong,is_valid_str)   
+        user_title = prompt_is_valid(titleFormat,strWrong,is_valid_str)   
         user_title = user_title.title()  
         if user_title in titles:  
             break

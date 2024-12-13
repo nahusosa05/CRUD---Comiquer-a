@@ -1,10 +1,9 @@
-import sqlite3
 from cfg import prompt_is_valid
 from cfg import is_int
 from cfg import is_valid_str
 from cfg import get_wrong_msg
 from conexion import insert_volumes
-from colorama import init, Fore
+from colorama import init, Fore, Back
 from conexion import insert_autor,insert_manga
 init(autoreset=True)
 
@@ -117,7 +116,7 @@ def get_volumes(conn):
 def registrar_mangas(conn):
     while True:  
         print(f"\n{'-' * 50}")
-        print(Fore.BLUE + "REGISTRAR MANGAS".center(50))
+        print(Back.BLUE + "REGISTRAR MANGAS".center(50))
         print(f"{'-' * 50}" + "\n")
         
         title = get_title()
