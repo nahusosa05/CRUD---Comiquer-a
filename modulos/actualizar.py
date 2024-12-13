@@ -296,6 +296,8 @@ def actualizar_mangas(conn):
 
     print("-" * 50)
     
+    print("\n" + Fore.CYAN + "=" * 50 )
+    
     print("\n" + "-" * 50)
     print(("Ingrese el " + Fore.RED + "Titulo "+ Fore.RESET +  "del manga a modificar").center(50))
     print("." * 50)
@@ -320,16 +322,20 @@ def actualizar_mangas(conn):
         user_option = user_option.upper()
         if user_option == 'TITULO':
             title_change(conn,user_title)
+            print("\n" + Fore.CYAN + "=" * 50 )
             break   
         elif user_option == 'AUTOR':
             author_change(conn,user_title)
+            print("\n" + Fore.CYAN + "=" * 50 )
             break
         elif user_option == 'VOLUMENES':
             volumes_change(conn,user_title)
+            print("\n" + Fore.CYAN + "=" * 50 )
             break
         else:
             x = get_wrong_msg(Fore.RED + "Opcion incorrecta, porfavor ingrese: (" + Fore.GREEN + "Titulo" 
             + Fore.RESET + "/" + Fore.RED + "Autor" + Fore.RESET + "/" 
             + Fore.YELLOW + "Volumenes" + Fore.RESET + ")")
             print(x)
+            print("\n" + Fore.CYAN + "=" * 50 )
     
