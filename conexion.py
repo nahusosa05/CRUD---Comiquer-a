@@ -67,7 +67,7 @@ def insert_volumes(conn,title,volumes_in_stock):
         x = get_format_msg(Fore.GREEN + f"Volúmenes de [{title}] insertados correctamente." + Fore.RESET)
 
     except sqlite3.Error:
-        x = get_wrong_msg(Fore.RED + f"Error al insertar el volumen 2 .".center(50) + Fore.RESET)
+        x = get_wrong_msg(Fore.RED + f"Error al insertar el volumen.".center(50) + Fore.RESET)
         flag = False
         
     print(x)
@@ -112,8 +112,3 @@ def fetch_authors(conn):
         return None  
 
     return authors
-
-def last_id(conn):
-    cursor = conn.cursor()
-    id = cursor.lastrowid
-    return id

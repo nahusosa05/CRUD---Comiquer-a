@@ -37,9 +37,14 @@ def get_autor():
     autor = autor.title()
     return autor
 
-def get_volumes():
+def get_volumes(conn):
     volumes_in_stock = {}  # Diccionario para almacenar volumen: cantidad
     volumes = -1
+    
+    cursor = conn.cursor()
+    cursor.execute("SELECT Volume FROM Volumes")  
+    info_in_bd = cursor.fetchall()  
+    volumes_in_db = [info[0] for info in info_in_bd] 
     
     # Bucle principal
     while volumes != 0:
@@ -47,6 +52,12 @@ def get_volumes():
         print("." * 50 + "\n")
         
         if volumes in volumes_in_stock:
+            print("\n" + "-" * 50)
+            print(Fore.RED + f"Volumen [{volumes}] ya guardado. Por favor ingrese otro".center(50))
+            print("-" * 50)
+            continue
+        
+        elif volumes in volumes_in_db:
             print("\n" + "-" * 50)
             print(Fore.RED + f"Volumen [{volumes}] ya guardado. Por favor ingrese otro".center(50))
             print("-" * 50)
@@ -147,12 +158,12 @@ def registrar_mangas(conn):
                     print("\n" + "-" * 50)
                     print(("Ingrese los " + Fore.BLUE + "volúmenes "+ Fore.RESET +  "que hay en stock (0 para salir).").center(50))
                     print("." * 50)
-                    volumes_in_stock = get_volumes()
+                    volumes_in_stock = get_volumes(conn)
                     if volumes_in_stock:
                         insert_volumes(conn,title,volumes_in_stock)
                     else:
                         print("\n" + "-" * 50)
-                        print(Fore.RED + "Error al insertar los volumenes 1.".center(50) + Fore.RESET)
+                        print(Fore.RED + "Error al insertar los volumenes.".center(50) + Fore.RESET)
                         print("-" * 50)
                 else:
                     print(Fore.YELLOW + "\n" + "." * 50)
