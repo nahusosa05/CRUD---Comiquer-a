@@ -2,6 +2,9 @@
 from colorama import init, Fore, Back
 from modulos.registrar import registrar_mangas
 from modulos.actualizar import actualizar_mangas
+from modulos.eliminar import eliminar_mangas
+from modulos.buscar import buscar_mangas
+from modulos.listado import listado_mangas
 import cfg 
 import conexion
 init(autoreset=True)
@@ -40,17 +43,17 @@ def main():
                     # ELIMINAR 
                     elif user_input == 3:
                         cfg.clear()
-                        #cfg.eliminar_mangas(books_in_stock)
+                        eliminar_mangas(conn)
 
                     # BUSCAR 
                     elif user_input == 4:
                         cfg.clear()
-                        #cfg.buscar_mangas(books_in_stock)
+                        buscar_mangas(conn)
 
                     # LISTADO
                     elif user_input == 5:
                         cfg.clear()
-                        #cfg.listado_mangas(books_in_stock)
+                        listado_mangas(conn)
 
                     # SALIR
                     elif user_input == 6:
