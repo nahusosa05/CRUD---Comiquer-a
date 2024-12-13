@@ -10,28 +10,7 @@ def connect_to_db(nom):
         return conn
     except sqlite3.Error:
         return None
- 
-def insert_autor(conn, autor):
-    flag = True
-    try:
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO Authors (AutorName) VALUES (?)", (autor,))
-        conn.commit()
-        x = get_format_msg(Fore.GREEN + f"Autor [{autor}] insertado correctamente.".center(50) + Fore.RESET)
-        # Indica que la inserción fue exitosa
-    
-    except sqlite3.IntegrityError:  # Error por clave única o duplicados
-        x = get_wrong_msg(Fore.RED + f"El autor '{autor}' ya existe en la base de datos.".center(50) + Fore.RESET)
-        flag = False
-        
-    except sqlite3.Error as e:  # Otros errores de SQLite
-        x = get_wrong_msg(Fore.RED + f"Error al insertar el autor: {e}".center(50) + Fore.RESET)    
-        flag = False
-        
-    print(x)
-    return flag
 
-    
 def insert_manga(conn, title, autor):
     flag = True
     try:
@@ -104,11 +83,44 @@ def fetch_authors(conn):
         if not authors:
             x = get_wrong_msg(Fore.RED + f"No se encontraron autores en la base de datos.".center(50) + Fore.RESET)
             print(x)
-            return None
+            return []
     
     except sqlite3.Error as e:
         x = get_wrong_msg(Fore.RED + f"Ocurrió un error inesperado: {e}".center(50) + Fore.RESET)
         print(x)
-        return None  
+        return []  
 
     return authors
+
+def insert_autor(conn, autor):
+    # Obtener lista de autores existentes
+    authors = fetch_authors(conn)
+
+    # Verificar si el autor ya está registrado
+    if autor in authors:
+        x = get_format_msg(Fore.YELLOW + f"Autor [{autor}] encontrado .".center(50) + Fore.RESET)
+        print(x)
+        return True  
+
+    try:
+        # Insertar el autor en la base de datos
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO Authors (AutorName) VALUES (?)", (autor,))
+        conn.commit()
+
+        # Mensaje de éxito
+        x = get_format_msg(Fore.YELLOW + f"Autor [{autor}] insertado correctamente.".center(50) + Fore.RESET)
+        print(x)
+        return True  # Retorna True indicando que la inserción fue exitosa
+
+    except sqlite3.IntegrityError:  # Error por clave única o duplicados
+        x = get_wrong_msg(Fore.RED + f"El autor '{autor}' ya existe en la base de datos.".center(50) + Fore.RESET)
+        print(x)
+        return False
+
+    except sqlite3.Error as e:  # Otros errores de SQLite
+        x = get_wrong_msg(Fore.RED + f"Error al insertar el autor: {e}".center(50) + Fore.RESET)
+        print(x)
+        return False
+
+                

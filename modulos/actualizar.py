@@ -28,6 +28,7 @@ def title_change(conn,user_title):
     print("." * 50)
     new_title = prompt_is_valid(titleFormat, strWrong, is_valid_str)
     new_title = new_title.title() 
+    new_title = new_title.strip()
     print("-" * 50)
     
     print("\n" + "-" * 50)      
@@ -40,6 +41,7 @@ def title_change(conn,user_title):
     while True:
         user_input = prompt_is_valid(option2Format, strWrong, is_valid_str)
         user_input = user_input.upper()
+        user_input = user_input.strip()
     
         if user_input == 'SI':
             try:
@@ -66,8 +68,7 @@ def title_change(conn,user_title):
             print(Fore.YELLOW + "Volviendo al menu...".center(50) + Fore.RESET)
             print(Fore.YELLOW + "." * 50 + "\n")
             break
-            
-           
+                  
 def author_change(conn, user_title):
     print("\n" + "-" * 50)
     print(("Ingrese el " + Fore.BLUE + "nuevo autor" + Fore.RESET + " del manga a modificar").center(50))
@@ -76,6 +77,7 @@ def author_change(conn, user_title):
     # Validar el nuevo autor
     new_author = prompt_is_valid(authorFormat, strWrong, is_valid_str)
     new_author = new_author.title()
+    new_author = new_author.strip()
     print("-" * 50)
 
     cursor = conn.cursor()
@@ -99,7 +101,8 @@ def author_change(conn, user_title):
     while True:
         user_input = prompt_is_valid(option2Format, strWrong, is_valid_str)
         user_input = user_input.upper()
-
+        user_input = user_input.strip()
+        
         if user_input == "SI":
             try:
                 cursor.execute("UPDATE Mangas SET Autor = ? WHERE Title = ?", (new_author, user_title))
@@ -144,7 +147,10 @@ def volumes_change(conn, user_title):
     quantitys = [quantity[1] for quantity in volumes_info] 
     
     for volume,quantity in zip(volumes,quantitys):
-        print((f"\t{" Volumen:"} {Fore.RED}{volume}{Fore.RESET} | Cantidad: {Fore.GREEN}{quantity}{Fore.RESET}").center(50))
+        if quantity<5:
+            print((f"\t{" Volumen:"} {Fore.RED}{volume}{Fore.RESET} | Cantidad: {Fore.GREEN}{quantity}{Fore.RESET}  {Back.YELLOW}POCO STOCK").center(50))
+        else:
+            print((f"\t{" Volumen:"} {Fore.RED}{volume}{Fore.RESET} | Cantidad: {Fore.GREEN}{quantity}{Fore.RESET}").center(50))
 
     print("-" * 50)
     
@@ -155,11 +161,13 @@ def volumes_change(conn, user_title):
     while True:
         user_option = prompt_is_valid(optionFormat,strWrong,is_valid_str)  
         user_option = user_option.upper()
+        user_option = user_option.strip()
+        
         if user_option == 'AGREGAR':
             print("\n" + "-" * 50)
             print(("Ingrese los " + Fore.BLUE + "volúmenes "+ Fore.RESET +  "que hay en stock (0 para salir).").center(50))
             print("." * 50)
-            volumes_in_stock = get_volumes(conn)
+            volumes_in_stock = get_volumes(conn,user_title)
             if volumes_in_stock:
                 insert_volumes(conn,user_title,volumes_in_stock)
                 prompt = get_format_msg(Fore.GREEN + "Modificacion hecha con exito.".center(50) + Fore.RESET)
@@ -176,6 +184,7 @@ def volumes_change(conn, user_title):
             while True:
                 user_option = prompt_is_valid(optionFormat,strWrong,is_valid_str)  
                 user_option = user_option.upper()
+                user_option = user_option.strip()
                 if user_option == 'VOLUMEN':
                     # Modificar un volumen existente
                     print("\n" + "-" * 50)
@@ -219,6 +228,7 @@ def volumes_change(conn, user_title):
                         while True:
                             user_option = prompt_is_valid(optionFormat,strWrong,is_valid_str)  
                             user_option = user_option.upper()
+                            user_option = user_option.strip()
                             if user_option == 'REINTENTAR':
                                 print(Fore.YELLOW + "\n" + "." * 50)
                                 print("Reiniciando el proceso...".center(50))
@@ -301,6 +311,7 @@ def actualizar_mangas(conn):
     while True:
         user_title = prompt_is_valid(titleFormat,strWrong,is_valid_str)   
         user_title = user_title.title()  
+        user_title = user_title.strip()
         if user_title in titles:  
             break
         else:
@@ -316,6 +327,7 @@ def actualizar_mangas(conn):
     while True:
         user_option = prompt_is_valid(optionFormat,strWrong,is_valid_str)  
         user_option = user_option.upper()
+        user_option = user_option.strip()
         if user_option == 'TITULO':
             title_change(conn,user_title)
             print("\n" + Fore.CYAN + "=" * 50 )

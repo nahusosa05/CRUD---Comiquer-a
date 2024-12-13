@@ -23,6 +23,7 @@ def get_title():
     print("." * 50)
     title = prompt_is_valid(titleFormat, strWrong, is_valid_str)
     title = title.title()
+    title = title.strip()
     return title
 
 def get_autor():
@@ -31,14 +32,15 @@ def get_autor():
     print("." * 50)
     autor = prompt_is_valid(autorFormat, strWrong, is_valid_str)
     autor = autor.title()
+    autor = autor.strip()
     return autor
 
-def get_volumes(conn):
+def get_volumes(conn,title):
     volumes_in_stock = {}  # Diccionario para almacenar volumen: cantidad
     volumes = -1
     
     cursor = conn.cursor()
-    cursor.execute("SELECT Volume FROM Volumes")  
+    cursor.execute("SELECT Volume FROM Volumes WHERE Title = ?", (title,))
     info_in_bd = cursor.fetchall()  
     volumes_in_db = [info[0] for info in info_in_bd] 
     
@@ -94,6 +96,7 @@ def get_volumes(conn):
     
     user_input = prompt_is_valid(optionFormat, strWrong, is_valid_str)
     user_input = user_input.upper()
+    user_input = user_input.strip()
     print("-" * 50)
     
     if user_input == 'SI':
@@ -140,6 +143,7 @@ def registrar_mangas(conn):
         print("." * 50)
         user_input = prompt_is_valid(optionFormat, strWrong, is_valid_str)
         user_input = user_input.upper()
+        user_input = user_input.strip()
         print("-" * 50)
 
         print("\n" + Fore.CYAN + "=" * 50)
@@ -152,7 +156,7 @@ def registrar_mangas(conn):
                 print("\n" + "-" * 50)
                 print(("Ingrese los " + Fore.BLUE + "volúmenes "+ Fore.RESET +  "que hay en stock (0 para salir).").center(50))
                 print("." * 50)
-                volumes_in_stock = get_volumes(conn)
+                volumes_in_stock = get_volumes(conn,title)
                 if volumes_in_stock:
                     insert_volumes(conn,title,volumes_in_stock)
                 else:
