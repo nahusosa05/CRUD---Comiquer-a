@@ -16,7 +16,7 @@ def main():
     if conn:
         while True:
             print(f"=" * 50)
-            print(Back.CYAN + Fore.GREEN + "       Menú para gestión de Mangas".center(50)) 
+            print(Back.CYAN + "Menú para gestión de Mangas".center(50)) 
             print(Fore.RESET + f"=" * 50) 
             print(f"{Fore.BLUE + '\t 1.':<14}{Fore.RESET + 'Registrar mangas'}")         
             print(f"{Fore.BLUE + '\t 2.':<14}{Fore.RESET + 'Actualizar mangas'}")        
