@@ -118,9 +118,9 @@ def get_volumes(conn,title):
 
 def registrar_mangas(conn):
     while True:  
-        print(f"\n{'-' * 50}")
+        print(f"\n{'=' * 50}")
         print(Back.BLUE + "REGISTRAR MANGAS".center(50))
-        print(f"{'-' * 50}" + "\n")
+        print(f"{'=' * 50}" + "\n")
         
         title = get_title()
 

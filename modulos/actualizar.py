@@ -279,9 +279,9 @@ def volumes_change(conn, user_title):
             print(x)
     
 def actualizar_mangas(conn):
-    print(f"\n{'-' * 50}")
+    print(f"\n{'=' * 50}")
     print(Back.BLUE + "MODIFICACIÓN DE MANGAS".center(50))
-    print(f"{'-' * 50}")
+    print(f"{'=' * 50}")
 
     titles = fetch_mangas(conn)  # Lista de títulos
 

@@ -27,9 +27,9 @@ def delete_manga(conn,user_title):
     print(prompt)
 
 def eliminar_mangas(conn):
-    print(f"\n{'-'*50}")
+    print(f"\n{'='*50}")
     print(Back.BLUE + "ELIMINACIÓN DE MANGAS".center(50))
-    print(f"-" * 50)
+    print(f"=" * 50)
       
     titles = fetch_mangas(conn)  # Lista de títulos
 
