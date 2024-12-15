@@ -106,7 +106,7 @@ def get_volumes(conn,title):
         print(Fore.YELLOW + "\n" + "." * 50)
         print(Fore.YELLOW + "Reiniciando el proceso...".center(50) + Fore.RESET)
         print(Fore.YELLOW + "." * 50)
-        return get_volumes()  
+        return get_volumes(conn,title)  
     elif user_input == 'SALIR':
         print("\n" + "-" * 50)
         print(Fore.RED + "Operación cancelada.".center(50) + Fore.RESET)

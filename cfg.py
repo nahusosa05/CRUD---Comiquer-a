@@ -46,7 +46,7 @@ def prompt_is_valid(prompt, els, validation):
 def get_wrong_msg(message):
     return (
         "\n" + "*" * 50 +
-        f"\n" + message +
+        f"\n" + f"{message}" +
         "\n" + "*" * 50
     )
 
